@@ -9,10 +9,10 @@ import os
 
 csvFile = r'tweets.csv'
  
-consumer_key = 'Q7kb0tZcVSX4sOfbFRn1re9kL'
-consumer_secret = 'nEwW2K9SrbRNFZKE2WWmpwb6X6a8P0z0OsbUT9U1IUuwTgk9CH'
-access_token = '793057507778363392-ha7b1g9TksNqz1zFc94GV94wUMvOT75'
-access_secret = 'fi7Mids79gL2x4PkiQyi5UQPcByPxbInCI9gekMJSpeW0'
+consumer_key = ''
+consumer_secret = ''
+access_token = '-ha7b1g9TksNqz1zFc94GV94wUMvOT75'
+access_secret = ''
 
 #construct the handler and set the access token 
 auth = OAuthHandler(consumer_key, consumer_secret)
