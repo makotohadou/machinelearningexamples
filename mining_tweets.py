@@ -11,7 +11,7 @@ csvFile = r'tweets.csv'
  
 consumer_key = ''
 consumer_secret = ''
-access_token = '-ha7b1g9TksNqz1zFc94GV94wUMvOT75'
+access_token = ''
 access_secret = ''
 
 #construct the handler and set the access token 
