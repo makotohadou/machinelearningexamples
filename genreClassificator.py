@@ -21,11 +21,11 @@ def start(c,s):
 
     classificador = c
         
-    data = pandas.read_csv("animeDatabase with LYRICS in ROMAJI CLEAN.csv",encoding='utf-8')
-    filtered = data[( data['opening'] != "not applicable")]
-    texts = filtered["opening"]
+    data = pandas.read_csv("csvFile.csv",encoding='utf-8')
+    filtered = data[( data["Synopsis"] != "not applicable")]
+    texts = filtered["Synopsis"]
     genres = filtered['Genres']
-    genres = [genre.split(',') for genre in genres]
+    genres = [genre.split(',') if not type(genre) == 'float' else [] for genre in genres]
     Y = []
     for i,j in enumerate(genres):
         stripped = [instance.strip() for instance in j if isClassifying(instance.strip()) ]

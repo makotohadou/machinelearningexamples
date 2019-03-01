@@ -1,7 +1,7 @@
 import pandas,os
 
 currentDir         = os.getcwd()+os.sep
-animeDatabase      = currentDir + "animeDatabase.csv"
+animeDatabase      = currentDir + "csvFile.csv"
 
 data = pandas.read_csv(animeDatabase,encoding='utf-8')
 genres = data['Genres']
@@ -45,8 +45,12 @@ def mergeDuplicated(d):
 
 
 
-for row in genres:
-    instances = row.split(',')
+for i,row in enumerate(genres):
+
+    try:
+        instances = row.split(',')
+    except Exception as e:
+        instances = []
     for instance in instances:
         if instance.lstrip() in genresDict:
             genresDict[instance.lstrip()] = genresDict[instance.lstrip()]+1
@@ -63,7 +67,10 @@ print "Average of genres per title = "+str(float(sum(genresDict.values()))/len(g
 combDict = {}
 combinationList = []
 for row in genres:
-    instances = row.split(',')
+    try:
+        instances = row.split(',')
+    except Exception as e:
+        instances = []
     instances = [instance.lstrip() for instance in instances]
     combinationList.extend(combine(instances))
 
@@ -90,7 +97,10 @@ for w in sorted(makotoValueDict, key=makotoValueDict.get, reverse=True):
 
 
 for row in genres:
-    instances = row.split(',')
+    try:
+        instances = row.split(',')
+    except Exception as e:
+        instances = []
     if len(instances) == 1:
         instance = instances[0].lstrip()
         if instance in uniqueDict:

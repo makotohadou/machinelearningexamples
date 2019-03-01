@@ -1,7 +1,8 @@
 #This simple spider will revolution the world
-import os,random,sys,time,unicodecsv as csv
+import os,random,sys,time,unicodecsv as csv,concurrent.futures
 from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,6 +12,7 @@ import pandas
 
 url = u"https://myanimelist.net"
 timeout = 10
+pool_size = 10
 
 
 currentDir         = os.getcwd()+os.sep
@@ -53,7 +55,7 @@ class Spider:
             return self.generateAnimeLinkNotOnDatabase()
 
     def generateAnimeLink(self):
-        Id = str(random.randint(25000,30000))
+        Id = str(random.randint(1,39000))
         link = animeLinkExample+Id
         self.driver.get(link)
         return (link,Id)
@@ -126,7 +128,9 @@ class scraper:
         number = 0
         while True:
             try:
-                driver = webdriver.PhantomJS(service_args=['--ignore-ssl-errors=true','--ssl-protocol=TLSv1'],service_log_path=os.path.devnull)
+                options = Options()
+                options.set_headless(headless=True)
+                driver = webdriver.Chrome(options=options, executable_path=r'chromedriver.exe')
                 #driver = webdriver.Firefox()
                 driver.set_window_size(1120,800)
                 driver.implicitly_wait(30)
@@ -149,19 +153,20 @@ class scraper:
 
 
 def scrapeForAnimes(limit):
+        executor = concurrent.futures.ThreadPoolExecutor(pool_size)
+        futures = [executor.submit(myOperation) for a in range(limit)]
+        concurrent.futures.wait(futures)
+
+def myOperation():
     try:
-        count = 0
         spider = Spider(url)
         spider.initiate()
-        while count < limit:
-            link = spider.generateAnimeLinkNotOnDatabase()
-            spider.collectAnimeData()
-            count+=1
+        link = spider.generateAnimeLinkNotOnDatabase()
+        spider.collectAnimeData()
         spider.driver.quit()
     except Exception as e:
         print str(e)
         print "Could not scrape for new animes"
         spider.driver.quit()
-
 
 scrapeForAnimes(1000)
